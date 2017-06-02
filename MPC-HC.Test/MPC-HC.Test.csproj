@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netcoreapp1.1</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="FakeItEasy">
+      <Version>3.3.2</Version>
+    </PackageReference>
+    <PackageReference Include="HtmlAgilityPack.NetCore">
+      <Version>1.5.0.1</Version>
+    </PackageReference>
+    <PackageReference Include="Humanizer">
+      <Version>2.2.0</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.0.0" />
+    <PackageReference Include="xunit" Version="2.2.0" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.2.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MPC-HC.Domain\MPC-HC.Domain.csproj">
+      <Project>{93ecba55-e12f-4a01-b22d-25e8db373f5e}</Project>
+      <Name>MPC-HC.Domain</Name>
+    </ProjectReference>
+  </ItemGroup>
+</Project>
