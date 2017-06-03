@@ -1,5 +1,13 @@
 # MPC-HC-CSharp-Api
 
+## Features
+* Play
+* Pause
+* Set sound level
+* Get all info from `/variables.html`
+* Open media file
+
+
 There is a low test covrage due to bad implementation of the MPC-HC web interface. (It returns no response but a 302, no matter what you throw at it.)
 
 Need to start the MPC-HC and enable web interface in the options. 
@@ -25,3 +33,5 @@ var commandService = new CommandService(_requestService);
 await commandService.Play();
 ```
 This will likely be changed in the future beacuse it's bad.
+
+
