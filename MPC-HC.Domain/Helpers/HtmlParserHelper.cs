@@ -17,7 +17,7 @@ namespace MPC_HC.Domain.Helpers
             info.FilePath = htmlDoc.GetElementbyId("filepath").InnerText;
             info.FileDirArg = htmlDoc.GetElementbyId("filedirarg").InnerText;
             info.FileDir = htmlDoc.GetElementbyId("filedir").InnerText;
-            info.State = Convert.ToInt32(htmlDoc.GetElementbyId("state").InnerText);
+            info.State = Info.IntToState(Convert.ToInt32(htmlDoc.GetElementbyId("state").InnerText));
             info.StateString = htmlDoc.GetElementbyId("statestring").InnerText;
             info.Position = TimeSpan.FromMilliseconds(Convert.ToDouble(htmlDoc.GetElementbyId("position").InnerText));
             info.PositionMillisec = Convert.ToInt64(htmlDoc.GetElementbyId("position").InnerText);

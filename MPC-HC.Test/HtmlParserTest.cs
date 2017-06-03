@@ -50,7 +50,7 @@ namespace MPC_HC.Test
             Assert.Equal("D:%5cDownloads%5cTorrentDay%5cDownloads%5cGravity.Falls.S01-S02.720p.WEB-DL.AAC2.0.H.264-iT00NZ%5cGravity.Falls.S01.720p.WEB-DL.AAC2.0.H.264-iT00NZ", info.FileDirArg);
             Assert.Equal("D:\\Downloads\\TorrentDay\\Downloads\\Gravity.Falls.S01-S02.720p.WEB-DL.AAC2.0.H.264-iT00NZ\\Gravity.Falls.S01.720p.WEB-DL.AAC2.0.H.264-iT00NZ", info.FileDir);
             Assert.Equal("Playing", info.StateString);
-            Assert.Equal(2, info.State);
+            Assert.Equal(State.Playing, info.State);
             Assert.Equal(77149, info.PositionMillisec);
             Assert.Equal(ByteSize.Parse("532 MB"), info.Size);
             Assert.Equal(true, info.Muted);

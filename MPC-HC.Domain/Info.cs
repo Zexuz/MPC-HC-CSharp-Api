@@ -8,7 +8,7 @@ public class Info
     public string FilePath { get; set; }
     public string FileDirArg { get; set; }
     public string FileDir { get; set; }
-    public int State { get; set; }
+    public State State { get; set; }
     public string StateString { get; set; }
     public long PositionMillisec { get; set; }
     public TimeSpan Position { get; set; }
@@ -20,4 +20,19 @@ public class Info
     public ByteSize Size { get; set; }
     public int ReloadTime { get; set; }
     public string Version { get; set; }
+
+    public static State IntToState(int i)
+    {
+        switch (i)
+        {
+            case 0:
+                return State.Stoped;
+            case 1:
+                return State.Paused;
+            case 2:
+                return State.Playing;
+            default:
+                return State.None;
+        }
+    }
 }
