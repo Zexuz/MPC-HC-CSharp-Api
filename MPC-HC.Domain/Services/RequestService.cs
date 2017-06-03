@@ -11,11 +11,11 @@ namespace MPC_HC.Domain.Services
         private readonly HttpClient _client;
         private readonly ILogService _logService;
 
-        public RequestService(HttpClient client, Uri baseUrl,ILogService logService)
+        public RequestService(HttpClient client, string baseUrl,ILogService logService)
         {
             _client = client;
             _logService = logService;
-            _client.BaseAddress = baseUrl;
+            _client.BaseAddress = new Uri(baseUrl);
         }
 
         public async Task<string> ExcutePostRequest(string path, IEnumerable<KeyValuePair<string, string>> payLoad)
