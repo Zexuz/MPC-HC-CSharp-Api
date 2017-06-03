@@ -18,7 +18,7 @@ namespace MPC_HC.Domain.Services
         public void OpenFile(string path)
         {
             var encodedPath = Uri.EscapeDataString(path);
-            _requestService.ExcuteGetRequest($"/browser.html?path={encodedPath}")
+            _requestService.ExcuteGetRequest($"/browser.html?path={encodedPath}");
         }
 
         public void SetPosition(TimeSpan timeSpan)

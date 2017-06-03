@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using FakeItEasy;
 using MPC_HC.Domain.Interfaces;
 using MPC_HC.Domain.Services;
@@ -7,13 +8,18 @@ using Xunit;
 
 namespace MPC_HC.Test
 {
-    public class CommandServiceTest
+    public class CommandServiceTest:IDisposable
     {
-        private readonly Uri _uri;
+        private readonly Uri _baseUri;
+        private readonly string  _path;
 
         public CommandServiceTest()
         {
-            _uri = new Uri("http://localhost:13579/controls.html");
+            _baseUri = new Uri("http://localhost:13579");
+            _path = "/controls.html";
+            var process = new Process();
+            process.StartInfo.FileName = "mpc-hc.exe";
+            process.Start();
         }
 
         [Fact]
@@ -29,6 +35,11 @@ namespace MPC_HC.Test
             Assert.Throws<ArgumentOutOfRangeException>(() => soundService.SetSoundLevel(1000));
             Assert.Throws<ArgumentOutOfRangeException>(() => soundService.SetSoundLevel(120));
             Assert.Throws<ArgumentOutOfRangeException>(() => soundService.SetSoundLevel(101));
+        }
+
+        public void Dispose()
+        {
+            
         }
     }
 }
