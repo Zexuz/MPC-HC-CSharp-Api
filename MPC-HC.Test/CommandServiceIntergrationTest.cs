@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics;
 using System.Net.Http;
 using System.Threading.Tasks;
+using MPC_HC.Domain;
 using MPC_HC.Domain.Helpers;
 using MPC_HC.Domain.Interfaces;
 using MPC_HC.Domain.Services;
@@ -10,17 +11,18 @@ using Xunit;
 
 namespace MPC_HC.Test
 {
-    public class CommandServiceTest : IDisposable
+    public class CommandServiceIntergrationTest : IDisposable
     {
-        private readonly string _path = "/controls.html";
-        private readonly Uri _baseUri = new Uri("http://localhost:13579");
-        private Process mediaProcess;
+        private Process _mediaProcess;
         private readonly IRequestService _requestService;
         private Info _info;
 
-        public CommandServiceTest()
+        private readonly MediaPlayerConfig _mediaPlayerConfig;
+
+        public CommandServiceIntergrationTest()
         {
-            _requestService = new RequestService(new HttpClient(), _baseUri, new LogService());
+            _mediaPlayerConfig = new MediaPlayerConfig("http://localhost:13579",@"D:\Program Files (x86)\MPC-HC\mpc-hc.exe");
+            _requestService = new RequestService(new HttpClient(), _mediaPlayerConfig.BaseUri, new LogService());
             AsyncHelpers.RunSync(InitMediaPlayer);
         }
 
@@ -28,7 +30,7 @@ namespace MPC_HC.Test
         {
             var commandService = new CommandService(_requestService);
 
-            mediaProcess = Process.Start("D:\\Program Files (x86)\\MPC-HC\\mpc-hc.exe");
+            _mediaProcess = Process.Start(_mediaPlayerConfig.PathToMediaPlayerExecutable);
             await Task.Delay(1000);
             _info = await commandService.GetInfo();
             return await commandService.OpenFile(
@@ -78,7 +80,7 @@ namespace MPC_HC.Test
 
         public void Dispose()
         {
-            mediaProcess.Kill();
+            _mediaProcess.Kill();
         }
     }
 }
