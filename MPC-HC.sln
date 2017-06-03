@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MPC_HC.Domain", "MPC-HC.Dom
 EndProject
 Project("{0DD9BC06-DC22-405C-865C-A81F4781D1AB}") = "MPC-HC.Test", "MPC-HC.Test\MPC-HC.Test.csproj", "{790B6642-198C-4E33-A68B-56F48CC71C47}"
 EndProject
-Project("{7E7C60F0-019C-4A3D-8DE3-49F261B1E0F6}") = "MPC-HC.Runner", "MPC-HC.Runner\MPC-HC.Runner.csproj", "{552F3632-3875-4F89-A9A9-1AA6A8E65331}"
+Project("{7D5AE2EC-6507-4A0F-BF33-AF573DE129B1}") = "Runner", "Runner\Runner.csproj", "{003E1E47-1F09-4913-94F9-7A2989884E4E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +23,10 @@ Global
 		{790B6642-198C-4E33-A68B-56F48CC71C47}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{790B6642-198C-4E33-A68B-56F48CC71C47}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{790B6642-198C-4E33-A68B-56F48CC71C47}.Release|Any CPU.Build.0 = Release|Any CPU
-		{552F3632-3875-4F89-A9A9-1AA6A8E65331}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{552F3632-3875-4F89-A9A9-1AA6A8E65331}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{552F3632-3875-4F89-A9A9-1AA6A8E65331}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{552F3632-3875-4F89-A9A9-1AA6A8E65331}.Release|Any CPU.Build.0 = Release|Any CPU
+		{003E1E47-1F09-4913-94F9-7A2989884E4E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{003E1E47-1F09-4913-94F9-7A2989884E4E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{003E1E47-1F09-4913-94F9-7A2989884E4E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{003E1E47-1F09-4913-94F9-7A2989884E4E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
