@@ -22,7 +22,7 @@ namespace MPC_HC.Test
         public CommandServiceIntergrationTest()
         {
             _mediaPlayerConfig = new MediaPlayerConfig("http://localhost:13579",@"D:\Program Files (x86)\MPC-HC\mpc-hc.exe");
-            _requestService = new RequestService(new HttpClient(), _mediaPlayerConfig.BaseUri, new LogService());
+            _requestService = new RequestService(new HttpClient(), "http://localhost:13579", new LogService());
             AsyncHelpers.RunSync(InitMediaPlayer);
         }
 
