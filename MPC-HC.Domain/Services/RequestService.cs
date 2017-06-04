@@ -6,7 +6,7 @@ using MPC_HC.Domain.Interfaces;
 
 namespace MPC_HC.Domain.Services
 {
-    public class RequestService : IRequestService
+    internal class RequestService : IRequestService
     {
         private readonly HttpClient _client;
         private readonly ILogService _logService;

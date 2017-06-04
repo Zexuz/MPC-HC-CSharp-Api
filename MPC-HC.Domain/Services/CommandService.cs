@@ -6,67 +6,80 @@ using MPC_HC.Domain.Interfaces;
 
 namespace MPC_HC.Domain.Services
 {
-    public class CommandService
+    internal class CommandService
     {
         private readonly IRequestService _requestService;
+        private const int Margin = 5 * 1000;
 
         public CommandService(IRequestService requestService)
         {
             _requestService = requestService;
         }
 
-        public async Task<string> OpenFile(string path)
+        public async Task<Result> OpenFile(string path)
         {
             var encodedPath = Uri.EscapeDataString(path);
-            return await _requestService.ExcuteGetRequest($"/browser.html?path={encodedPath}");
+            await _requestService.ExcuteGetRequest($"/browser.html?path={encodedPath}");
+            var info = await GetInfo();
+            return new Result
+            {
+                Info = info,
+                ResultCode = info.FilePath == path ? ResultCode.Ok : ResultCode.Fail
+            };
         }
 
-        public async Task<string> SetPosition(TimeSpan timeSpan)
+        public async Task<Result> SetPosition(TimeSpan timeSpan)
         {
             if (timeSpan.Milliseconds < 0) throw new ArgumentOutOfRangeException(nameof(timeSpan), "Can not be negative timespan");
-            IEnumerable<KeyValuePair<string, string>> keyValuePairs = new[]
+
+            var info = await GetResult(Command.Volume, GetKeyValuePair("position", timeSpan.ToString("hh:mm:ss")));
+            return new Result
             {
-                GetKeyValuePair("wm_command", ((int)Command.Position).ToString()),
-                GetKeyValuePair("position", timeSpan.ToString("hh:mm:ss"))
+                Info = info,
+                ResultCode = IsInRange(info.PositionMillisec - timeSpan.TotalMilliseconds, -Margin, Margin) ? ResultCode.Ok : ResultCode.Fail
             };
-            return  await _requestService.ExcutePostRequest("/command.html", keyValuePairs);
         }
 
-        public async Task<string> SetSoundLevel(int soundLevel)
+        public async Task<Result> SetSoundLevel(int soundLevel)
         {
             if (soundLevel < 0 || soundLevel > 100) throw new ArgumentOutOfRangeException(nameof(soundLevel), "Must be betwine 0 and 100");
-            IEnumerable<KeyValuePair<string, string>> keyValuePairs = new[]
+
+            var info = await GetResult(Command.Volume, GetKeyValuePair("volume", soundLevel.ToString()));
+            return new Result
             {
-                GetKeyValuePair("wm_command", ((int)Command.Volume).ToString()),
-                GetKeyValuePair("volume", soundLevel.ToString())
+                Info = info,
+                ResultCode = info.VolumeLevel == soundLevel ? ResultCode.Ok : ResultCode.Fail
             };
-            return await _requestService.ExcutePostRequest("command.html", keyValuePairs);
         }
 
-        public async Task<int> GetSoundLevel()
+        public async Task<Result> Play()
         {
-            var result = await GetInfo();
-            return result.VolumeLevel;
+            var info = await GetResult(Command.Play, null);
+            return new Result
+            {
+                Info = info,
+                ResultCode = info.State == State.Playing ? ResultCode.Ok : ResultCode.Fail
+            };
         }
 
-        public async Task<string> Play()
+        public async Task<Result> Pause()
         {
-            IEnumerable<KeyValuePair<string, string>> keyValuePairs = new[]
+            var info = await GetResult(Command.Pause, null);
+            return new Result
             {
-                GetKeyValuePair("wm_command", ((int)Command.Play).ToString())
+                Info = info,
+                ResultCode = info.State == State.Paused ? ResultCode.Ok : ResultCode.Fail
             };
-
-            return await _requestService.ExcutePostRequest("/command.html", keyValuePairs);
         }
 
-        public async Task<string> Pause()
+        public async Task<Result> Stop()
         {
-            var keyValuePairs = new List<KeyValuePair<string, string>>
+            var info = await GetResult(Command.Stop, null);
+            return new Result
             {
-                GetKeyValuePair("wm_command", ((int)Command.Pause).ToString())
+                Info = info,
+                ResultCode = info.State == State.Stoped ? ResultCode.Ok : ResultCode.Fail
             };
-
-            return await _requestService.ExcutePostRequest("/command.html", keyValuePairs);
         }
 
         public async Task<Info> GetInfo()
@@ -76,9 +89,28 @@ namespace MPC_HC.Domain.Services
         }
 
 
+        private bool IsInRange(double numberToCheck, int bottom, int top)
+        {
+            return (numberToCheck >= bottom && numberToCheck <= top);
+        }
+
         private static KeyValuePair<string, string> GetKeyValuePair(string name, string value)
         {
             return new KeyValuePair<string, string>(name, value);
+        }
+
+        private async Task<Info> GetResult(Command command, KeyValuePair<string, string>? secondArg)
+        {
+            var keyValuePairs = new List<KeyValuePair<string, string>>
+            {
+                GetKeyValuePair("wm_command", ((int) command).ToString())
+            };
+
+            if (secondArg.HasValue) keyValuePairs.Add(secondArg.Value);
+
+            await _requestService.ExcutePostRequest("/command.html", keyValuePairs);
+
+            return await GetInfo();
         }
     }
 }

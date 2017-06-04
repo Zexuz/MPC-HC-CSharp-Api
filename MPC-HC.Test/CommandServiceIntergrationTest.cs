@@ -1,11 +1,9 @@
 using System;
 using System.Diagnostics;
-using System.Net.Http;
 using System.Threading.Tasks;
 using MPC_HC.Domain;
 using MPC_HC.Domain.Helpers;
 using MPC_HC.Domain.Interfaces;
-using MPC_HC.Domain.Services;
 using Xunit;
 
 
@@ -18,64 +16,66 @@ namespace MPC_HC.Test
         private Info _info;
 
         private readonly MediaPlayerConfig _mediaPlayerConfig;
+        private MPCHomeCinema _mpcHomeCinema;
 
         public CommandServiceIntergrationTest()
         {
             _mediaPlayerConfig = new MediaPlayerConfig("http://localhost:13579",@"D:\Program Files (x86)\MPC-HC\mpc-hc.exe");
-            _requestService = new RequestService(new HttpClient(), "http://localhost:13579", new LogService());
-            AsyncHelpers.RunSync(InitMediaPlayer);
+//            _requestService = new RequestService(new HttpClient(), "http://localhost:13579", new LogService());
+            _mpcHomeCinema = new MPCHomeCinema("http://localhost:13579");
+            var x = AsyncHelpers.RunSync(InitMediaPlayer);
+            if(x.ResultCode == ResultCode.Fail) throw new Exception("Can't open media file.");
         }
 
-        private async Task<string> InitMediaPlayer()
+        private async Task<Result> InitMediaPlayer()
         {
-            var commandService = new CommandService(_requestService);
 
             _mediaProcess = Process.Start(_mediaPlayerConfig.PathToMediaPlayerExecutable);
             await Task.Delay(1000);
-            _info = await commandService.GetInfo();
-            return await commandService.OpenFile(
+            return await _mpcHomeCinema.OpenFileAsync(
                 "D:\\Downloads\\TorrentDay\\Downloads\\Gravity.Falls.S01-S02.720p.WEB-DL.AAC2.0.H.264-iT00NZ\\Gravity.Falls.S01.720p.WEB-DL.AAC2.0.H.264-iT00NZ\\Gravity.Falls.S01E01.Tourist.Trapped.720p.WEB-DL.AAC2.0.H264-Reaperza.mkv");
         }
 
         [Fact]
         public void SetSoundThrowsArgumentOutOfRangeException()
         {
-            var commandService = new CommandService(_requestService);
-            Assert.ThrowsAsync<ArgumentOutOfRangeException>(async () => await commandService.SetSoundLevel(-1));
-            Assert.ThrowsAsync<ArgumentOutOfRangeException>(async () => await commandService.SetSoundLevel(-10));
-            Assert.ThrowsAsync<ArgumentOutOfRangeException>(async () => await commandService.SetSoundLevel(-54));
-            Assert.ThrowsAsync<ArgumentOutOfRangeException>(async () => await commandService.SetSoundLevel(1000));
-            Assert.ThrowsAsync<ArgumentOutOfRangeException>(async () => await commandService.SetSoundLevel(120));
-            Assert.ThrowsAsync<ArgumentOutOfRangeException>(async () => await commandService.SetSoundLevel(101));
+            Assert.ThrowsAsync<ArgumentOutOfRangeException>(async () => await _mpcHomeCinema.SetVolumeLevel(-1));
+            Assert.ThrowsAsync<ArgumentOutOfRangeException>(async () => await _mpcHomeCinema.SetVolumeLevel(-10));
+            Assert.ThrowsAsync<ArgumentOutOfRangeException>(async () => await _mpcHomeCinema.SetVolumeLevel(-54));
+            Assert.ThrowsAsync<ArgumentOutOfRangeException>(async () => await _mpcHomeCinema.SetVolumeLevel(1000));
+            Assert.ThrowsAsync<ArgumentOutOfRangeException>(async () => await _mpcHomeCinema.SetVolumeLevel(120));
+            Assert.ThrowsAsync<ArgumentOutOfRangeException>(async () => await _mpcHomeCinema.SetVolumeLevel(101));
         }
 
         [Fact]
         public async void SetSoundSuccess()
         {
-            var expectedSoundLevel = 10;
-            var commandService = new CommandService(_requestService);
-            if (_info.VolumeLevel == expectedSoundLevel)
-                expectedSoundLevel = 100;
-            await commandService.SetSoundLevel(expectedSoundLevel);
-            var soundLevel = await commandService.GetSoundLevel();
-            Assert.Equal(expectedSoundLevel, soundLevel);
+            //there is a 1% chance this test give a success if there's a fail.
+            var expectedSoundLevel = new Random().Next(0, 100);
+            var res = await _mpcHomeCinema.SetVolumeLevel(expectedSoundLevel);
+            
+            Assert.Equal(expectedSoundLevel, res.Info.VolumeLevel);
+            Assert.Equal(ResultCode.Ok, res.ResultCode);
         }
 
         [Fact]
         public async void PauseAndPlay()
         {
-            var commandService = new CommandService(_requestService);
-
-            var info = await commandService.GetInfo();
-            if (info.State == State.Playing)
-                await commandService.Pause();
-
-            var info2 = await commandService.GetInfo();
-            Assert.True(info2.State == State.Paused);
-
-            await commandService.Play();
-            var info3 = await commandService.GetInfo();
-            Assert.True(info3.State == State.Playing);
+            var pauseRes = await _mpcHomeCinema.PauseAsync();
+            Assert.True(pauseRes.ResultCode == ResultCode.Ok);
+            Assert.Equal(State.Paused,pauseRes.Info.State);
+            
+            var playRes = await _mpcHomeCinema.PlayAsync();
+            Assert.True(playRes.ResultCode == ResultCode.Ok);
+            Assert.Equal(State.Playing,playRes.Info.State);
+        }
+        
+        [Fact]
+        public async void Stop()
+        {
+            var res = await _mpcHomeCinema.StopAsync();
+            Assert.True(res.ResultCode == ResultCode.Ok);
+            Assert.Equal(State.Stoped,res.Info.State);
         }
 
         public void Dispose()
