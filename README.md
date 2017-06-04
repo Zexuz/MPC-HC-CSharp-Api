@@ -38,6 +38,5 @@ if(result.ResultCode == ResultCode.Ok){
   Console.WriteLine($"{result.Info.FileName} is playing");
 }
 ```
-This will likely be changed in the future beacuse it's bad.
 
 
