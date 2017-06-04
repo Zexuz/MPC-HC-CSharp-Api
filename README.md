@@ -13,15 +13,6 @@
 * ~~Prev~~
 * ~~SetPosition~~
 
-## Set up MPC-HC
-
-You need to enable the inbuilt web interface in the options.
-
-![MPC-HC](https://i.gyazo.com/5f56efbb32a65d42cfce24a23d5db2ab.png)
-
-![MPC-HC options](https://i.gyazo.com/f03dbfea5ff204b30cf92a4b80921b42.png)
-
-### That's it, just remember that MPC-HC needs to be running in order for you to retrive info from it.
 
 ## Usage
 
@@ -35,6 +26,17 @@ if(result.ResultCode == ResultCode.Ok){
   Console.WriteLine($"{result.Info.FileName} is playing");
 }
 ```
+
+
+## Set up MPC-HC
+
+You need to enable the inbuilt web interface in the options.
+
+![MPC-HC](https://i.gyazo.com/5f56efbb32a65d42cfce24a23d5db2ab.png)
+
+![MPC-HC options](https://i.gyazo.com/f03dbfea5ff204b30cf92a4b80921b42.png)
+
+### That's it, just remember that MPC-HC needs to be running in order for you to retrive info from it.
 
 ## Testing
 
