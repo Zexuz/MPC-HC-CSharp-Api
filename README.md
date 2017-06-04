@@ -3,9 +3,15 @@
 ## Features
 * Play
 * Pause
-* Set sound level
+* Stop
+* Set volume level
 * Get all info from `/variables.html`
 * Open media file
+* ~~UnMute~~
+* ~~Mute~~
+* ~~Next~~
+* ~~Prev~~
+* ~~SetPosition~~
 
 
 There is a low test covrage due to bad implementation of the MPC-HC web interface. (It returns no response but a 302, no matter what you throw at it.)
@@ -25,10 +31,12 @@ You need to enable the inbuilt web interface in the options.
 As of now, this is how you create an instace of the `commandService` and send request to the web interface.
 
 ```csharp
-var url = "http://localhost:13579";
-var requestService = new RequestService(new HttpClient(), url, new LogService());
-var commandService = new CommandService(_requestService);
-await commandService.Play();
+var mpcHomeCinema = new MPCHomeCinema("http://localhost:13579");
+var result = await mpcHomeCinema.PlayAsync();
+if(result.ResultCode == ResultCode.Ok){
+  //we are good
+  Console.WriteLine($"{result.Info.FileName} is playing");
+}
 ```
 This will likely be changed in the future beacuse it's bad.
 
