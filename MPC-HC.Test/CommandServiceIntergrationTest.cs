@@ -77,6 +77,41 @@ namespace MPC_HC.Test
             Assert.True(res.ResultCode == ResultCode.Ok);
             Assert.Equal(State.Stoped,res.Info.State);
         }
+        
+        [Fact]
+        public async void MuteAndUnMute()
+        {
+            var info = await _mpcHomeCinema.GetInfo();
+            if (info.Muted)
+            {
+                var res1 = await _mpcHomeCinema.UnMuteAsync();
+                Assert.True(res1.ResultCode == ResultCode.Ok);
+                Assert.False(res1.Info.Muted);
+                var res2 = await _mpcHomeCinema.MuteAsync();
+                Assert.True(res2.ResultCode == ResultCode.Ok);
+                Assert.True(res2.Info.Muted);
+            }
+            else
+            {
+                
+                var res2 = await _mpcHomeCinema.MuteAsync();
+                Assert.True(res2.ResultCode == ResultCode.Ok);
+                Assert.True(res2.Info.Muted);
+                
+                var res1 = await _mpcHomeCinema.UnMuteAsync();
+                Assert.True(res1.ResultCode == ResultCode.Ok);
+                Assert.False(res1.Info.Muted);
+            }
+           
+        }
+        [Fact]
+        public async void ToggleMute()
+        {
+            var info = await _mpcHomeCinema.GetInfo();
+            var res = await _mpcHomeCinema.ToggleMuteAsync();
+            Assert.NotEqual(info.Muted,res.Info.Muted);
+            Assert.True(res.ResultCode == ResultCode.Ok);
+        }
 
         public void Dispose()
         {

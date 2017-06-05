@@ -82,6 +82,56 @@ namespace MPC_HC.Domain.Services
             };
         }
 
+
+        public async Task<Result> UnMute()
+        {
+            var firstInfo = await GetInfo();
+            if (!firstInfo.Muted)
+                return new Result
+                {
+                    Info = firstInfo,
+                    ResultCode = ResultCode.Ok
+                };
+
+
+            var info = await GetResult(Command.ToggleMute, null);
+            return new Result
+            {
+                Info = info,
+                ResultCode = !info.Muted? ResultCode.Ok : ResultCode.Fail
+            };
+        }
+
+
+        public async Task<Result> Mute()
+        {
+            var firstInfo = await GetInfo();
+            if (firstInfo.Muted)
+                return new Result
+                {
+                    Info = firstInfo,
+                    ResultCode = ResultCode.Ok
+                };
+
+
+            var info = await GetResult(Command.ToggleMute, null);
+            return new Result
+            {
+                Info = info,
+                ResultCode = info.Muted? ResultCode.Ok : ResultCode.Fail
+            };
+        }
+
+        public async Task<Result> ToggleMute()
+        {
+            var info = await GetResult(Command.ToggleMute, null);
+            return new Result
+            {
+                Info = info,
+                ResultCode = ResultCode.Ok
+            };
+        }
+
         public async Task<Info> GetInfo()
         {
             var response = await _requestService.ExcuteGetRequest("/variables.html");

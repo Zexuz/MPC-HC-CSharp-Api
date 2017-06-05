@@ -39,12 +39,17 @@ namespace MPC_HC.Domain
 
         public async Task<Result> UnMuteAsync()
         {
-            throw new System.NotImplementedException();
+            return await _commandService.UnMute();
         }
 
         public async Task<Result> MuteAsync()
         {
-            throw new System.NotImplementedException();
+            return await _commandService.Mute();
+        }
+        
+        public async Task<Result> ToggleMuteAsync()
+        {
+            return await _commandService.ToggleMute();
         }
 
         public async Task<Result> NextAsync()
@@ -81,6 +86,7 @@ namespace MPC_HC.Domain
         Task<Result> OpenFileAsync(string path);
         Task<Result> UnMuteAsync();
         Task<Result> MuteAsync();
+        Task<Result> ToggleMuteAsync();
         Task<Result> NextAsync();
         Task<Result> PrevAsync();
         Task<Result> SetVolumeLevel(int soundLevel);
