@@ -1,6 +1,6 @@
 # MPC-HC-CSharp-Api
 
-## Installa
+## Install
 Install using nuget
 `Install-Package MPC-HC.Domain`
 
