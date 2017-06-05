@@ -10,9 +10,9 @@
 * UnMute
 * Mute
 * ToggleMute
-* ~~Next~~
-* ~~Prev~~
-* ~~SetPosition~~
+* Next
+* Prev
+* SetPosition
 
 
 ## Usage
