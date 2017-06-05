@@ -1,5 +1,8 @@
 # MPC-HC-CSharp-Api
 
+Install using nuget
+`Install-Package MPC-HC.Domain`
+
 ## Features
 * Play
 * Pause
