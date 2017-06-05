@@ -112,7 +112,16 @@ namespace MPC_HC.Test
             Assert.NotEqual(info.Muted,res.Info.Muted);
             Assert.True(res.ResultCode == ResultCode.Ok);
         }
+        
 
+        [Fact]
+        public async void SetPostition()
+        {
+            var res = await _mpcHomeCinema.SetPosition(new TimeSpan(0,11,23));
+            Assert.True(res.ResultCode == ResultCode.Ok);
+        }
+
+        
         public void Dispose()
         {
             _mediaProcess.Kill();

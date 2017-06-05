@@ -51,15 +51,17 @@ namespace MPC_HC.Domain
         {
             return await _commandService.ToggleMute();
         }
-
+        
+        //TODO figure out how to test this...
         public async Task<Result> NextAsync()
         {
-            throw new System.NotImplementedException();
+            return await _commandService.Next();
         }
-
+        
+        //TODO figure out how to test this...
         public async Task<Result> PrevAsync()
         {
-            throw new System.NotImplementedException();
+            return await _commandService.Prev();
         }
 
         public async Task<Result> SetVolumeLevel(int soundLevel)
@@ -69,7 +71,7 @@ namespace MPC_HC.Domain
 
         public async Task<Result> SetPosition(TimeSpan position)
         {
-            throw new NotImplementedException();
+            return await _commandService.SetPosition(position);
         }
 
         public async Task<Info> GetInfo()

@@ -32,7 +32,7 @@ namespace MPC_HC.Domain.Services
         {
             if (timeSpan.Milliseconds < 0) throw new ArgumentOutOfRangeException(nameof(timeSpan), "Can not be negative timespan");
 
-            var info = await GetResult(Command.Volume, GetKeyValuePair("position", timeSpan.ToString("hh:mm:ss")));
+            var info = await GetResult(Command.Position, GetKeyValuePair("position", timeSpan.ToString()));
             return new Result
             {
                 Info = info,
@@ -131,6 +131,27 @@ namespace MPC_HC.Domain.Services
                 ResultCode = ResultCode.Ok
             };
         }
+        
+        public async Task<Result> Next()
+        {
+            var info = await GetResult(Command.Next, null);
+            return new Result
+            {
+                Info = info,
+                ResultCode = ResultCode.Ok
+            };
+        }
+        
+        public async Task<Result> Prev()
+        {
+            var info = await GetResult(Command.Prev, null);
+            return new Result
+            {
+                Info = info,
+                ResultCode = ResultCode.Ok
+            };
+        }
+        
 
         public async Task<Info> GetInfo()
         {

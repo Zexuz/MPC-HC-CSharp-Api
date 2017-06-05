@@ -1,5 +1,7 @@
 public enum Command
 {
+    Next = 920,
+    Prev = 919,
     ToggleMute = 909,
     Stop = 890,
     TogglePlay = 889,
