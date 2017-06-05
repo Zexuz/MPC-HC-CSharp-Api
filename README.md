@@ -7,8 +7,9 @@
 * Set volume level
 * Get all info from `/variables.html`
 * Open media file
-* ~~UnMute~~
-* ~~Mute~~
+* UnMute
+* Mute
+* ToggleMute
 * ~~Next~~
 * ~~Prev~~
 * ~~SetPosition~~
