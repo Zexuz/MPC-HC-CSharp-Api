@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>zexuz.MPCHC</id>
+    <version>1.0.0</version>
+    <authors>Robin Edbom</authors>
+    <owners>Robin Edbom</owners>
+    <projectUrl>https://github.com/Zexuz/MPC-HC-CSharp-Api</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>A package to interact with the MPC-HC web interface</description>
+    <releaseNotes>First release</releaseNotes>
+    <copyright>Copyright 2017</copyright>
+    <tags>MPC-HC</tags>
+    <dependencies>
+      <dependency id="HtmlAgilityPack.NetCore" version="1.5.0.1" />
+      <dependency id="Humanizer" version="2.2.0" />
+    </dependencies>
+  </metadata>
+</package>
