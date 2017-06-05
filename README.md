@@ -1,5 +1,9 @@
 # MPC-HC-CSharp-Api
 
+## Install
+Install using nuget
+`Install-Package MPC-HC.Domain`
+
 ## Features
 * Play
 * Pause
@@ -10,9 +14,9 @@
 * UnMute
 * Mute
 * ToggleMute
-* ~~Next~~
-* ~~Prev~~
-* ~~SetPosition~~
+* Next
+* Prev
+* SetPosition
 
 
 ## Usage
