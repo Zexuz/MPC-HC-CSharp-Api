@@ -10,10 +10,12 @@ namespace MPC_HC.Domain
         private readonly string _baseUrl;
         private readonly CommandService _commandService;
 
+        public bool IsDebugMode { get; set; } = false;
+
         public MPCHomeCinema(string baseUrl)
         {
             _baseUrl = baseUrl;
-            var requestService = new RequestService(new HttpClient(), _baseUrl, new LogService());
+            var requestService = new RequestService(new HttpClient(), _baseUrl, new LogService(IsDebugMode));
             _commandService = new CommandService(requestService);
         }
 
