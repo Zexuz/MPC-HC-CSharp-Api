@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package >
   <metadata>
-    <id>zexuz.MPCHC</id>
+    <id>MPC-HC.Domain</id>
     <version>1.0.1</version>
     <authors>Robin Edbom</authors>
     <owners>Robin Edbom</owners>
