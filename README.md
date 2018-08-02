@@ -18,6 +18,15 @@ Install using nuget
 * Prev
 * SetPosition
 
+## Events
+With the help of the `MPCHomeCinemaObserver` you can subscribe to the `PropertyChanged` event.
+
+This event will notify when the state of the MPC-HC changes (`/varibales.html`) and rise the event.
+The event cointains
+* The old state
+* The new state
+* The property that changed as a enum.
+
 
 ## Usage
 
@@ -30,6 +39,30 @@ if(result.ResultCode == ResultCode.Ok){
   //we are good
   Console.WriteLine($"{result.Info.FileName} is playing");
 }
+```
+
+And if you want to listen for changes.
+
+```csharp
+ var mpcHcObserver = new MPCHomeCinemaObserver(mpcClient);
+ 
+ mpcHcObserver.PropertyChanged += (sender, args) =>
+ {
+      switch (args.Property)
+      {
+          case Property.File:
+              Console.WriteLine($"Property changed from {args.OldInfo.FileName}, -> {args.NewInfo.FileName}");
+              break;
+          case Property.State:
+              Console.WriteLine($"Property changed from {args.OldInfo.State}, -> {args.NewInfo.State}");
+              break;
+          case Property.Possition:
+              Console.WriteLine($"Property changed from {args.OldInfo.Position}, -> {args.NewInfo.Position}");
+              break;
+          default:
+              throw new ArgumentOutOfRangeException();
+      }
+  };
 ```
 
 
