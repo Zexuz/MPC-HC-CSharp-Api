@@ -1,6 +1,5 @@
 using System;
 using HtmlAgilityPack;
-using Humanizer.Bytes;
 
 namespace MPC_HC.Domain.Helpers
 {
@@ -26,7 +25,7 @@ namespace MPC_HC.Domain.Helpers
             info.VolumeLevel = Convert.ToInt32(htmlDoc.GetElementbyId("volumelevel").InnerText);
             info.Muted = Convert.ToBoolean(Convert.ToInt16(htmlDoc.GetElementbyId("muted").InnerText));
             info.PlaybackRate = Convert.ToDouble(htmlDoc.GetElementbyId("playbackrate").InnerText);
-            info.Size = ByteSize.Parse(htmlDoc.GetElementbyId("size").InnerText);
+            info.SizeString = htmlDoc.GetElementbyId("size").InnerText;
             info.ReloadTime = Convert.ToInt32(htmlDoc.GetElementbyId("reloadtime").InnerText);
             info.Version = htmlDoc.GetElementbyId("version").InnerText;
 

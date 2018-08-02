@@ -1,5 +1,4 @@
 using System;
-using Humanizer.Bytes;
 
 public class Info
 {
@@ -17,7 +16,7 @@ public class Info
     public int VolumeLevel { get; set; }
     public bool Muted { get; set; }
     public double PlaybackRate { get; set; }
-    public ByteSize Size { get; set; }
+    public string SizeString { get; set; }
     public int ReloadTime { get; set; }
     public string Version { get; set; }
 

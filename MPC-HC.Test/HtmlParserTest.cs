@@ -1,4 +1,3 @@
-using Humanizer.Bytes;
 using MPC_HC.Domain.Helpers;
 using Xunit;
 
@@ -52,7 +51,7 @@ namespace MPC_HC.Test
             Assert.Equal("Playing", info.StateString);
             Assert.Equal(State.Playing, info.State);
             Assert.Equal(77149, info.PositionMillisec);
-            Assert.Equal(ByteSize.Parse("532 MB"), info.Size);
+            Assert.Equal("532 MB", info.SizeString);
             Assert.Equal(true, info.Muted);
             Assert.Equal(100, info.VolumeLevel);
             
