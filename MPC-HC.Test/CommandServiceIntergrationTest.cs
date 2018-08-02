@@ -6,7 +6,6 @@ using MPC_HC.Domain.Helpers;
 using MPC_HC.Domain.Interfaces;
 using Xunit;
 
-
 namespace MPC_HC.Test
 {
     public class CommandServiceIntergrationTest : IDisposable
