@@ -12,6 +12,7 @@ namespace MPC_HC.Domain
         Task<Result> UnMuteAsync();
         Task<Result> MuteAsync();
         Task<Result> ToggleMuteAsync();
+        Task<Result> ToggleFullscreen();
         Task<Result> NextAsync();
         Task<Result> PrevAsync();
         Task<Result> SetVolumeLevel(int soundLevel);

@@ -53,7 +53,12 @@ namespace MPC_HC.Domain
         {
             return await _commandService.ToggleMute();
         }
-        
+
+        public async Task<Result> ToggleFullscreen()
+        {
+            return await _commandService.ToogleFullscreen();
+        }
+
         //TODO figure out how to test this...
         public async Task<Result> NextAsync()
         {

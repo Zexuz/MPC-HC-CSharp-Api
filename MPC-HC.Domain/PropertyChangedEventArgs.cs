@@ -17,4 +17,5 @@ namespace MPC_HC.Domain
             Property = property;
         }
     }
+    
 }

@@ -9,7 +9,7 @@ namespace MPC_HC.Domain.Services
     internal class CommandService
     {
         private readonly IRequestService _requestService;
-        private const int Margin = 5 * 1000;
+        private const    int             Margin = 5 * 1000;
 
         public CommandService(IRequestService requestService)
         {
@@ -32,54 +32,34 @@ namespace MPC_HC.Domain.Services
         {
             if (timeSpan.Milliseconds < 0) throw new ArgumentOutOfRangeException(nameof(timeSpan), "Can not be negative timespan");
 
-            var info = await GetResult(Command.Position, GetKeyValuePair("position", timeSpan.ToString()));
-            return new Result
-            {
-                Info = info,
-                ResultCode = IsInRange(info.PositionMillisec - timeSpan.TotalMilliseconds, -Margin, Margin) ? ResultCode.Ok : ResultCode.Fail
-            };
+            return await Execute(Command.Volume,info => IsInRange(info.PositionMillisec - timeSpan.TotalMilliseconds, -Margin, Margin),  GetKeyValuePair("position", timeSpan.ToString()));
         }
 
         public async Task<Result> SetSoundLevel(int soundLevel)
         {
             if (soundLevel < 0 || soundLevel > 100) throw new ArgumentOutOfRangeException(nameof(soundLevel), "Must be betwine 0 and 100");
 
-            var info = await GetResult(Command.Volume, GetKeyValuePair("volume", soundLevel.ToString()));
-            return new Result
-            {
-                Info = info,
-                ResultCode = info.VolumeLevel == soundLevel ? ResultCode.Ok : ResultCode.Fail
-            };
+            return await Execute(Command.Volume,info => info.VolumeLevel == soundLevel, GetKeyValuePair("volume", soundLevel.ToString()));
         }
 
         public async Task<Result> Play()
         {
-            var info = await GetResult(Command.Play, null);
-            return new Result
-            {
-                Info = info,
-                ResultCode = info.State == State.Playing ? ResultCode.Ok : ResultCode.Fail
-            };
+            return await Execute(Command.Play, info => info.State == State.Playing);
+        }
+
+        public async Task<Result> ToogleFullscreen()
+        {
+            return await Execute(Command.ToggleFullscreen, info => info.State == State.Playing);
         }
 
         public async Task<Result> Pause()
         {
-            var info = await GetResult(Command.Pause, null);
-            return new Result
-            {
-                Info = info,
-                ResultCode = info.State == State.Paused ? ResultCode.Ok : ResultCode.Fail
-            };
+            return await Execute(Command.Pause, info => info.State == State.Paused);
         }
 
         public async Task<Result> Stop()
         {
-            var info = await GetResult(Command.Stop, null);
-            return new Result
-            {
-                Info = info,
-                ResultCode = info.State == State.Stoped ? ResultCode.Ok : ResultCode.Fail
-            };
+            return await Execute(Command.Pause, info => info.State == State.Stoped);
         }
 
 
@@ -93,15 +73,8 @@ namespace MPC_HC.Domain.Services
                     ResultCode = ResultCode.Ok
                 };
 
-
-            var info = await GetResult(Command.ToggleMute, null);
-            return new Result
-            {
-                Info = info,
-                ResultCode = !info.Muted? ResultCode.Ok : ResultCode.Fail
-            };
+            return await Execute(Command.ToggleMute, info => !info.Muted);
         }
-
 
         public async Task<Result> Mute()
         {
@@ -114,49 +87,39 @@ namespace MPC_HC.Domain.Services
                 };
 
 
-            var info = await GetResult(Command.ToggleMute, null);
-            return new Result
-            {
-                Info = info,
-                ResultCode = info.Muted? ResultCode.Ok : ResultCode.Fail
-            };
+            return await Execute(Command.ToggleMute, info => info.Muted);
         }
 
         public async Task<Result> ToggleMute()
         {
-            var info = await GetResult(Command.ToggleMute, null);
-            return new Result
-            {
-                Info = info,
-                ResultCode = ResultCode.Ok
-            };
+            return await Execute(Command.ToggleMute, info => info.Muted);
         }
-        
+
         public async Task<Result> Next()
         {
-            var info = await GetResult(Command.Next, null);
-            return new Result
-            {
-                Info = info,
-                ResultCode = ResultCode.Ok
-            };
+            return await Execute(Command.Next, info => true);
         }
-        
+
         public async Task<Result> Prev()
         {
-            var info = await GetResult(Command.Prev, null);
-            return new Result
-            {
-                Info = info,
-                ResultCode = ResultCode.Ok
-            };
+            return await Execute(Command.Prev, info => true);
         }
-        
+
 
         public async Task<Info> GetInfo()
         {
             var response = await _requestService.ExcuteGetRequest("/variables.html");
             return HtmlParserHelper.ParseHtmlToInfo(response);
+        }
+        
+        private async Task<Result> Execute(Command command,Func<Info,bool> validate, KeyValuePair<string, string>? secondArg = null)
+        {
+            var info = await GetResult(command, null);
+            return new Result
+            {
+                Info = info,
+                ResultCode = validate(info)? ResultCode.Ok : ResultCode.Fail
+            };
         }
 
 

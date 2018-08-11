@@ -7,6 +7,7 @@ public enum Command
     TogglePlay = 889,
     Pause = 888,
     Play = 887,
+    ToggleFullscreen = 830,
     Volume = -2,
     Position = -1
     

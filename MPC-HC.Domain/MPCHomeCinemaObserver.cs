@@ -7,6 +7,7 @@ namespace MPC_HC.Domain
     public class MPCHomeCinemaObserver
     {
         public event PropertyChangedEventHandler PropertyChanged;
+        public event ExceptionEventHandler Error;
 
         public TimeSpan UpdateFrequency { get; set; }
 
@@ -42,25 +43,35 @@ namespace MPC_HC.Domain
         {
             while (_isRunning)
             {
-                _newInfo = await _mpchc.GetInfo();
-
-                if (_newInfo.State != _oldInfo.State)
+                try
                 {
-                    OnPropertyChanged(Property.State);
-                }
+                    _newInfo = await _mpchc.GetInfo();
 
-                if (_newInfo.Position != _oldInfo.Position)
+                    if (_newInfo.State != _oldInfo.State)
+                    {
+                        OnPropertyChanged(Property.State);
+                    }
+
+                    if (_newInfo.Position != _oldInfo.Position)
+                    {
+                        OnPropertyChanged(Property.Possition);
+                    }
+
+                    if (_newInfo.FileName != _oldInfo.FileName)
+                    {
+                        OnPropertyChanged(Property.File);
+                    }
+
+                    _oldInfo = _newInfo;
+                }
+                catch (Exception e)
                 {
-                    OnPropertyChanged(Property.Possition);
+                    Error?.Invoke(this,new ExceptionEventArgs(e));
                 }
-
-                if (_newInfo.FileName != _oldInfo.FileName)
+                finally
                 {
-                    OnPropertyChanged(Property.File);
+                    await Task.Delay(UpdateFrequency);
                 }
-
-                _oldInfo = _newInfo;
-                await Task.Delay(UpdateFrequency);
             }
         }
 
