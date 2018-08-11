@@ -17,6 +17,7 @@ Install using nuget
 * Next
 * Prev
 * SetPosition
+* ToggleFullscreen
 
 ## Events
 With the help of the `MPCHomeCinemaObserver` you can subscribe to the `PropertyChanged` event.
