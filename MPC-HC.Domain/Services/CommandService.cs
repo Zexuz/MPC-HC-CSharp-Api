@@ -32,7 +32,7 @@ namespace MPC_HC.Domain.Services
         {
             if (timeSpan.Milliseconds < 0) throw new ArgumentOutOfRangeException(nameof(timeSpan), "Can not be negative timespan");
 
-            return await Execute(Command.Volume,info => IsInRange(info.PositionMillisec - timeSpan.TotalMilliseconds, -Margin, Margin),  GetKeyValuePair("position", timeSpan.ToString()));
+            return await Execute(Command.Position,info => IsInRange(info.PositionMillisec - timeSpan.TotalMilliseconds, -Margin, Margin),  GetKeyValuePair("position", timeSpan.ToString()));
         }
 
         public async Task<Result> SetSoundLevel(int soundLevel)
@@ -114,7 +114,7 @@ namespace MPC_HC.Domain.Services
         
         private async Task<Result> Execute(Command command,Func<Info,bool> validate, KeyValuePair<string, string>? secondArg = null)
         {
-            var info = await GetResult(command, null);
+            var info = await GetResult(command, secondArg);
             return new Result
             {
                 Info = info,
